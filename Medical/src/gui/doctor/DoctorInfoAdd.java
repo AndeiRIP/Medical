@@ -1,9 +1,9 @@
+package gui.doctor;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,23 +17,29 @@ import javax.swing.JTextField;
 
 import exceptions.BlankException;
 import exceptions.NameException;
+import gui.ClsSettings;
+import gui.DocStart;
+import gui.dialog.EDt;
+import gui.dialog.ErrorDialog;
+import gui.dialog.ErrorDialog1;
+import gui.dialog.ErrorDialog2;
+import gui.dialog.SuccessDialog;
 
-class DoctorInfomodify extends JFrame implements ActionListener {
-
+public class DoctorInfoAdd extends JFrame implements ActionListener {
 	static Connection cn = null;
 	Statement st = null;
 	ResultSet rs = null;
 
-	JLabel lmain, ldi, lname, ladd, ltel, lspecial, ldid, ldspec, lwork, lworkfrom, lworkto;
-	JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
-	TextArea taadd, taspecial;
-	JButton bsub, bclr, bmod, bback;
+	JLabel lmain, ldi, lname, ladd, ltel, lspecial, ldid, ldspec, lwork, lworkfrom, lworkto, lfee;
+	JTextField tfname, tftel, tfdid, tfworkf, tfworkt, tffee;
+	TextArea taadd, tacur, taspecial;
+	JButton bsub, bclr, bback;
 
 	int x, y;
 	String str;
-	clsSettings settings = new clsSettings();
+	ClsSettings settings = new ClsSettings();
 
-	DoctorInfomodify() {
+	public DoctorInfoAdd() {
 		super("Doctor Information");
 		setSize(1024, 768);
 		setVisible(true);
@@ -78,6 +84,7 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 		tftel = new JTextField(30);
 		tftel.setBounds(640, 138, 200, 20);
 		add(tftel);
+
 		settings.Numvalidator(tftel);
 
 		ldspec = new JLabel("Specialization :");
@@ -110,23 +117,20 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 		add(tfworkt);
 		settings.Numvalidator(tfworkt);
 
-		bsub = new JButton("SEARCH", new ImageIcon("images/search.png"));
-		bsub.setBounds(250, 643, 110, 30);
+		bsub = new JButton("ADD", new ImageIcon("images/add.gif"));
+		bsub.setBounds(362, 643, 100, 30);
 		add(bsub);
 
 		bclr = new JButton("CLEAR", new ImageIcon("images/LOGGOFF.PNG"));
-		bclr.setBounds(390, 643, 100, 30);
+		bclr.setBounds(470, 643, 100, 30);
 		add(bclr);
 
-		bmod = new JButton("MODIFY", new ImageIcon("images/modify.png"));
-		bmod.setBounds(530, 643, 100, 30);
-		add(bmod);
-
 		bback = new JButton("BACK", new ImageIcon("images/restore.png"));
-		bback.setBounds(700, 643, 100, 30);
+		bback.setBounds(580, 643, 100, 30);
 		add(bback);
 
 		try {
+
 			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 			cn = DriverManager.getConnection("Jdbc:Odbc:doc");
 		}
@@ -137,11 +141,7 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
-		bmod.addActionListener(new modify());
 		bback.addActionListener(new back());
-	}
-
-	public void actionPerformed(ActionEvent ae) {
 	}
 
 	class clear implements ActionListener {
@@ -158,79 +158,33 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 		}
 	}
 
-	public static void main(String[] args) {
-		new DoctorInfomodify();
-		System.out.println("Doctors Info Mod");
-	}
-
 	class back implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			new docStart();
+			new DocStart();
 			setVisible(false);
 		}
 	}
 
 	class submit implements ActionListener {
-
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				Integer num = Integer.parseInt(tfdid.getText());
-				String name;
-				String addr;
-				String contact;
-				String spec;
-				String workf;
-				String workt;
-
-				Statement st = cn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM DOC WHERE did=" + num);
-
-				if (rs.next()) {
-					num = rs.getInt("did");
-					name = rs.getString("name");
-					addr = rs.getString("address");
-					contact = rs.getString("contact");
-					spec = rs.getString("specialization");
-					workf = rs.getString("workfrom");
-					workt = rs.getString("workto");
-
-					tfname.setText(name);
-					taadd.setText(addr);
-					tftel.setText(contact);
-					taspecial.setText(spec);
-					tfworkf.setText(workf);
-					tfworkt.setText(workt);
-
-				}
-
-			} catch (SQLException sq) {
-				System.out.println(sq);
-			}
-
-		}
-
-	}
-
-	class modify implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			try {
-
-				Integer num1 = Integer.parseInt(tfdid.getText());
-				if (num1.equals(null)) {
+				String num = tfdid.getText();
+				if (num.equals(null)) {
 					System.out.println("num");
 					throw new BlankException();
 				}
 
-				String name1 = tfname.getText();
+				String name = tfname.getText();
+
 				int a;
-				a = name1.charAt(0);
-				if (name1.equals("") || a == 32) {
+				a = name.charAt(0);
+				if (name.equals("") || a == 32) {
 					throw new BlankException();
 				} else {
-					for (int i = 0; i < name1.length(); i++) {
-						boolean check = Character.isLetter(name1.charAt(i));
-						a = name1.charAt(i);
+					for (int i = 0; i < name.length(); i++) {
+						boolean check = Character.isLetter(name.charAt(i));
+						a = name.charAt(i);
 						System.out.print("  " + a);
 						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
 							throw new NameException();
@@ -239,37 +193,26 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 					}
 				}
 
-				String addr1 = taadd.getText();
-				if (addr1.equals(null)) {
+				String addr = taadd.getText();
+				if (addr.equals(null)) {
 					System.out.println("addr");
 					throw new BlankException();
 				}
 
-				String contact1 = tftel.getText();
+				String contact = tftel.getText();
 
-				String spec1 = taspecial.getText();
-				String workf1 = tfworkf.getText();
-				String workt1 = tfworkt.getText();
+				String spec = taspecial.getText();
 
-				// Statement st1=cn.createStatement();
+				String workf = tfworkf.getText();
 
-				String str = "UPDATE DOC SET name=?,address=?,contact=?,specialization=?,workfrom=?,workto=? WHERE did=?";
+				String workt = tfworkt.getText();
 
-				Statement st1 = cn.createStatement();
+				Statement st = cn.createStatement();
 
-				PreparedStatement psmt = cn.prepareStatement(str);
-				psmt.setString(1, name1);
-				psmt.setString(2, addr1);
-				psmt.setString(3, contact1);
-				psmt.setString(4, spec1);
-				psmt.setString(5, workf1);
-				psmt.setString(6, workt1);
-				psmt.setInt(7, num1);
+				st.executeUpdate("INSERT INTO DOC VALUES('" + num + "','" + name + "','" + addr + "','" + contact
+						+ "','" + spec + "','" + workf + "','" + workt + "');");
 
-				psmt.executeUpdate();
-
-				new SuccessDialog2();
-
+				new SuccessDialog();
 			} catch (SQLException sq) {
 				String message = "Enter Valid Doctor ID and Contact.";
 				JOptionPane.showMessageDialog(new JFrame(), message, "ERROR!", JOptionPane.ERROR_MESSAGE);
@@ -286,6 +229,13 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 			}
 
 		}
+
 	}
 
+	public void actionPerformed(ActionEvent ae) {
+	}
+
+	public static void main(String[] args) {
+		new DoctorInfoAdd();
+	}
 }

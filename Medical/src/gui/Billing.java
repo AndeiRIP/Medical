@@ -1,8 +1,12 @@
+package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
+
+import gui.dialog.ErrorDialog2;
+
 import java.text.*;
 
 class Billing extends JFrame implements ActionListener {

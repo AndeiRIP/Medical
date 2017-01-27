@@ -1,3 +1,4 @@
+package gui.pacient;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -6,13 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-class PatientPage extends JFrame implements ActionListener {
+import gui.MainPage;
+
+public class PatientPage extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -4553228631590052638L;
 	
 	JButton badd, bmod, bview, bback, bexit;
 	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
 
-	PatientPage() {
+	public PatientPage() {
 		super("Patient's Information");
 		setSize(1024, 768);
 		setVisible(true);

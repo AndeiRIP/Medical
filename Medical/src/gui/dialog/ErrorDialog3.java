@@ -1,17 +1,18 @@
+package gui.dialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class ErrorDialog2 
+public class ErrorDialog3 
 	{
-		ErrorDialog2()
+		ErrorDialog3()
 		{
-		 String message = "Please Enter All The Fields";
+		 String message = "One of the field is Blank";
 		 JOptionPane.showMessageDialog(new JFrame(), message, "ERROR!",
          JOptionPane.ERROR_MESSAGE);
 		}
 
   public static void main(String argv[])
 	  {
-			new ErrorDialog2();
+			new ErrorDialog3();
 	  }
 }

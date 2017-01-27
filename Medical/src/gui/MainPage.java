@@ -1,3 +1,4 @@
+package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -6,13 +7,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-class MainPage extends JFrame implements ActionListener {
+import gui.pacient.PatientPage;
+import gui.report.Report;
+import start.StartApp;
+
+public class MainPage extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -3060188223831053422L;
 
 	JButton bpat, bdoc, bbill, breport, bback, bexit;
 	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
 
-	MainPage() {
+	public MainPage() {
 		
 		super("Hospital Management System");
 		setSize(1024, 768);
@@ -99,7 +104,7 @@ class MainPage extends JFrame implements ActionListener {
 
 	class doctor implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			new docStart();
+			new DocStart();
 			setVisible(false);
 		}
 	}
@@ -117,7 +122,4 @@ class MainPage extends JFrame implements ActionListener {
 		}
 	}
 
-	/*
-	 * public static void main(String[] args) { new start(); }
-	 */
 }

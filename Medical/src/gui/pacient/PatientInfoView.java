@@ -1,9 +1,21 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
+package gui.pacient;
+import java.awt.Frame;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-class PatientInfoView extends JFrame implements ActionListener
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class PatientInfoView extends JFrame implements ActionListener
 {
 
 	static Connection cn=null;
@@ -23,7 +35,7 @@ JButton bsub,bclr,bback;
 
 //int x,y;
 //String str;
-PatientInfoView()
+public PatientInfoView()
 {
 	super("View Patient Information");
 	setSize(1024,768);

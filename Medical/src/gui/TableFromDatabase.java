@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import gui.pacient.PatientTableFromDatabase;
 
 class TableFromDatabase extends JFrame {
 	private static final long serialVersionUID = 1L;

@@ -1,13 +1,22 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+package gui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class docStart extends JFrame implements ActionListener
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import gui.doctor.DoctorInfoAdd;
+import gui.doctor.DoctorInfoView;
+import gui.doctor.DoctorInfomodify;
+
+public class DocStart extends JFrame implements ActionListener
 {
 	JButton badd,bmod,bview,bback,bexit;
 	JLabel linfo,linfo1,linfo2,linfo3,linfo4;
 
-	docStart()
+	public DocStart()
 	{
 		super("Doctor's Information");
 		setSize(1024,768);
@@ -111,6 +120,6 @@ class docStart extends JFrame implements ActionListener
 */
 	public static void main(String[] args) 
 	{
-		new docStart();
+		new DocStart();
 	}
 }

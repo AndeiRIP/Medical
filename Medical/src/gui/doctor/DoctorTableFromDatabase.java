@@ -1,3 +1,4 @@
+package gui.doctor;
 import java.awt.*;
 import java.io.*;
 import java.sql.*;
@@ -5,13 +6,13 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
  
-class DoctorTableFromDatabase extends JFrame
+public class DoctorTableFromDatabase extends JFrame
 {
 	static Connection cn=null;
 	Statement st=null;
 	ResultSet rs=null;
 
-    DoctorTableFromDatabase()
+	public DoctorTableFromDatabase()
     {
         Vector columnNames = new Vector();
         Vector data = new Vector();

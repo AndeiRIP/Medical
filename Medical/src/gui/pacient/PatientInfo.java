@@ -1,3 +1,4 @@
+package gui.pacient;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;
@@ -24,8 +25,14 @@ import javax.swing.JTextField;
 
 import exceptions.BlankException;
 import exceptions.NameException;
+import gui.ClsSettings;
+import gui.dialog.EDt;
+import gui.dialog.ErrorDialog;
+import gui.dialog.ErrorDialog1;
+import gui.dialog.ErrorDialog2;
+import gui.dialog.SuccessDialog;
 
-class PatientInfo extends JFrame implements ActionListener {
+public class PatientInfo extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1525675329129602584L;
 	
 	static Connection dbConnection = null;
@@ -44,9 +51,9 @@ class PatientInfo extends JFrame implements ActionListener {
 	String dialogmessage;
 	String dialogs;
 	int dialogtype = JOptionPane.PLAIN_MESSAGE;
-	clsSettings settings = new clsSettings();
+	ClsSettings settings = new ClsSettings();
 
-	PatientInfo() {
+	public PatientInfo() {
 		super("Add Patient Information");
 		setSize(1024, 768);
 		setVisible(true);
