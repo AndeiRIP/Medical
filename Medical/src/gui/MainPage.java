@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import gui.pacient.PatientPage;
 import gui.report.Report;
+import start.Constants;
 import start.StartApp;
 
 public class MainPage extends JFrame implements ActionListener {
@@ -16,10 +17,10 @@ public class MainPage extends JFrame implements ActionListener {
 
 	JButton bpat, bdoc, bbill, breport, bback, bexit;
 	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
-
+	
 	public MainPage() {
 		
-		super("Hospital Management System");
+		super(Constants.APP_TITLE);
 		setSize(1024, 768);
 		setVisible(true);
 		setLayout(null);

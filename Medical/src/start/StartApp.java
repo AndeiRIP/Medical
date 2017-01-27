@@ -1,4 +1,5 @@
 package start;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -24,48 +25,47 @@ import gui.MainPage;
 
 public class StartApp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 4504258170212439955L;
-	
+
 	private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 	static JFrame frame;
-	
+
 	private static JPanel titlePanel;
 	private static JPanel fieldsPanel;
 	private static JPanel buttonsPanel;
-	
+
 	private JButton loginBtn;
 	private JButton exitBtn;
 
 	private JLabel titleText;
 	private JLabel userText;
 	private JLabel passwordText;
-	
+
 	private static JTextField userTextField;
 	private static JPasswordField passwordTextField;
-	
+
 	private String loginName;
 	private String loginPass;
 	private String dialogMessage;
-	private String dialogs = "Successful Authentication";
-	
+
 	int dialogtype = JOptionPane.PLAIN_MESSAGE;
 
 	public void start() {
 
 		createLoginUI();
-		
+
 		// main frame
-		frame = new JFrame("Hospital Managment");
+		frame = new JFrame(Constants.APP_TITLE);
 		frame.setSize(300, 200);
 		frame.setResizable(false);
 
 		Container pane = frame.getContentPane();
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		//pane.setLayout(new GridLayout(3,1));
+		// pane.setLayout(new GridLayout(3,1));
 		pane.add(titlePanel);
 		pane.add(fieldsPanel);
 		pane.add(buttonsPanel);
-		
+
 		frame.setLocation((screen.width - 500) / 2, ((screen.height - 350) / 2));
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
@@ -78,7 +78,7 @@ public class StartApp extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent event) {
 		Object source = event.getSource();
-		
+
 		if (source.equals(loginBtn)) {
 			login();
 
@@ -86,57 +86,57 @@ public class StartApp extends JFrame implements ActionListener {
 			disposeLoginPage();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void login() {
 		loginName = userTextField.getText().trim();
 		// TODO fix deprecation
 		loginPass = passwordTextField.getText().trim();
-		
+
 		// TODO implement login
 		if (loginName.equals("s") && loginPass.equals("s")) {
 			dialogtype = JOptionPane.INFORMATION_MESSAGE;
-			dialogMessage = "Welcome, " + loginName + "!";
-			JOptionPane.showMessageDialog((Component) null, dialogMessage, dialogs, dialogtype);
-			
+			dialogMessage = Constants.WELLCOME + loginName + "!";
+			JOptionPane.showMessageDialog((Component) null, dialogMessage, Constants.AUTH_SUCCESSFULL, dialogtype);
+
 			// start the application
 			new MainPage();
 			disposeLoginPage();
 
 		} else {
-			JOptionPane.showMessageDialog(null, "Invaild User name or password", "WARNING!!!",
+			JOptionPane.showMessageDialog(null, Constants.AUTH_INVALID, Constants.WARNING,
 					JOptionPane.INFORMATION_MESSAGE);
 			userTextField.setText("");
 			passwordTextField.setText("");
 		}
 	}
-	
+
 	private void disposeLoginPage() {
 		setVisible(false);
 		frame.dispose();
 	}
-	
+
 	private void createLoginUI() {
 
 		// title
 		titlePanel = new JPanel();
 		titlePanel.setLayout(new FlowLayout());
 		titlePanel.setOpaque(true);
-		
-		titleText = new JLabel("Hospital Managment ");
+
+		titleText = new JLabel(Constants.APP_TITLE);
 		titlePanel.add(titleText);
 
 		// login fields
 		fieldsPanel = new JPanel();
 		fieldsPanel.setLayout(new GridLayout(2, 2));
 		fieldsPanel.setOpaque(true);
-		
-		userText = new JLabel("Username :");
+
+		userText = new JLabel(Constants.USERNAME);
 		userTextField = new JTextField(20);
 
-		passwordText = new JLabel("Password :");
+		passwordText = new JLabel(Constants.PASSWORD);
 		passwordTextField = new JPasswordField(20);
-		
+
 		fieldsPanel.add(userText);
 		fieldsPanel.add(userTextField);
 		fieldsPanel.add(passwordText);
@@ -146,13 +146,13 @@ public class StartApp extends JFrame implements ActionListener {
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new FlowLayout());
 		buttonsPanel.setOpaque(true);
-		
-		loginBtn = new JButton("Login", new ImageIcon("images/key.gif"));
+
+		loginBtn = new JButton(Constants.LOGIN, new ImageIcon("images/key.gif"));
 		loginBtn.addActionListener(this);
-		
-		exitBtn = new JButton("Exit", new ImageIcon("images/Keys.gif"));
+
+		exitBtn = new JButton(Constants.EXIT, new ImageIcon("images/Keys.gif"));
 		exitBtn.addActionListener(this);
-		
+
 		buttonsPanel.add(loginBtn);
 		buttonsPanel.add(exitBtn);
 	}
