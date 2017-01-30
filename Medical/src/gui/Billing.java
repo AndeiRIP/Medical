@@ -139,21 +139,22 @@ class Billing extends JFrame implements ActionListener {
 	class submit extends Frame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				Integer no, num = Integer.parseInt(tfno.getText());
+				String text = tfno.getText();
+				int num = Integer.parseInt(text);
 				String name, room, dateadd, rtype;
 
-				Statement st = cn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM PAT WHERE patientno=" + num);
+				Statement statement = cn.createStatement();
+				ResultSet queryResult = statement.executeQuery("SELECT * FROM PAT WHERE patientno=" + num);
 
-				if (rs.next()) {
+				if (queryResult.next()) {
 
-					no = rs.getInt("patientno");
-					name = rs.getString("name");
-					dateadd = rs.getString("dateadd");
+					int no = queryResult.getInt("patientno");
+					name = queryResult.getString("name");
+					dateadd = queryResult.getString("dateadd");
 					System.out.println(dateadd);
-					// d=rs.getString("dateadd");
+					// d = rs.getString("dateadd");
 
-					rtype = rs.getString("rtype");
+					rtype = queryResult.getString("rtype");
 
 					tfname.setText(name);
 					tfdateadd.setText(dateadd);

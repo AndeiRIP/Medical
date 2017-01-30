@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,16 +13,19 @@ import gui.report.Report;
 import start.Constants;
 import start.StartApp;
 
-public class MainPage extends JFrame implements ActionListener {
+public class MainPage extends JFrame {
 	private static final long serialVersionUID = -3060188223831053422L;
 
 	JButton bpat, bdoc, bbill, breport, bback, bexit;
 	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
-	
+
+	private static final int width = 1024;
+	private static final int height = 768;
+
 	public MainPage() {
-		
+
 		super(Constants.APP_TITLE);
-		setSize(1024, 768);
+		setSize(width, height);
 		setVisible(true);
 		setLayout(null);
 
@@ -44,83 +48,79 @@ public class MainPage extends JFrame implements ActionListener {
 		linfo4 = new JLabel("4. Patient and Doctor related Data");
 		linfo4.setBounds(50, 413, 250, 20);
 		add(linfo4);
+     
+		createMenuButtons();
+		createActionButtons();
 
-		bpat = new JButton("Patient", new ImageIcon("images/Advances.png"));
+	}
+
+	private void createMenuButtons() {
+		bpat = new JButton(Constants.PACIENT, new ImageIcon(Constants.IMG_PERSON));
 		bpat.setBounds(430, 200, 180, 30);
+		bpat.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new PatientPage();
+				setVisible(false);
+			}
+		});
 		add(bpat);
 
-		bdoc = new JButton("Doctor", new ImageIcon("images/Advances.png"));
+		bdoc = new JButton(Constants.DOCTOR, new ImageIcon(Constants.IMG_PERSON));
 		bdoc.setBounds(430, 270, 180, 30);
+		bdoc.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new DocStart();
+				setVisible(false);
+			}
+		});
 		add(bdoc);
 
-		bbill = new JButton("Billing", new ImageIcon("images/Attendance.png"));
+		bbill = new JButton(Constants.BILLING, new ImageIcon(Constants.IMG_BILLING));
 		bbill.setBounds(430, 340, 180, 30);
+		bbill.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new Billing();
+				setVisible(false);
+			}
+		});
 		add(bbill);
 
-		breport = new JButton("Reports", new ImageIcon("images/edit.png"));
+		breport = new JButton(Constants.REPORT, new ImageIcon(Constants.IMG_REPORT));
 		breport.setBounds(430, 408, 180, 30);
+		breport.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new Report();
+				setVisible(false);
+			}
+		});
 		add(breport);
+	}
 
-		bback = new JButton("BACK", new ImageIcon("images/preview_Hover.png"));
+	private void createActionButtons() {
+		bback = new JButton(Constants.BACK, new ImageIcon(Constants.IMG_BACK));
 		bback.setBounds(230, 515, 100, 30);
+		bback.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new StartApp();
+				setVisible(false);	
+			}
+		});
 		add(bback);
 
-		bexit = new JButton("EXIT", new ImageIcon("images/exits.png"));
+		bexit = new JButton(Constants.EXIT, new ImageIcon(Constants.IMG_EXIT));
 		bexit.setBounds(730, 515, 100, 30);
+		bexit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		add(bexit);
-
-		bpat.addActionListener(new patient());
-		bdoc.addActionListener(new doctor());
-		bbill.addActionListener(new billing());
-		bexit.addActionListener(new exit());
-		bback.addActionListener(new back());
-		breport.addActionListener(new report());
-
-	}
-
-	public void actionPerformed(ActionEvent ae) {
-		// TODO implement 
-	}
-
-	class report implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new Report();
-			setVisible(false);
-		}
-	};
-
-	class back implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new StartApp();
-			setVisible(false);
-		}
-	}
-
-	class patient implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new PatientPage();
-			setVisible(false);
-		}
-	}
-
-	class doctor implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new DocStart();
-			setVisible(false);
-		}
-	}
-
-	class billing implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new Billing();
-			setVisible(false);
-		}
-	}
-
-	class exit implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			System.exit(0);
-		}
 	}
 
 }

@@ -87,7 +87,6 @@ public class StartApp extends JFrame implements ActionListener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void login() {
 		loginName = userTextField.getText().trim();
 		// TODO fix deprecation

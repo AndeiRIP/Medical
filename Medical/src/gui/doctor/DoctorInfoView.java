@@ -201,7 +201,7 @@ class submit implements ActionListener
 		try{
 
 		tapatlist.setText("");			
-		Integer num=Integer.parseInt(tfdid.getText());
+		int num=Integer.parseInt(tfdid.getText());
 		String name;
 		String addr;
 		String contact;

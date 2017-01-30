@@ -281,7 +281,8 @@ class back implements ActionListener
 
 class submit extends Frame implements ActionListener
 {
-		Integer num,no=0;
+		int num;
+		int no=0;
 		String name,addr,contact,blgr,hist,dob,current,room,dateadd,rtype,mf,docname;
 		
 

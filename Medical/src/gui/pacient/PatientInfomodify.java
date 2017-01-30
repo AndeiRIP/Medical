@@ -273,11 +273,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				Integer num1 = Integer.parseInt(tfpno.getText());
-				if (num1.equals(null)) {
-					throw new BlankException();
-				}
-
+				int num1 = Integer.parseInt(tfpno.getText());
 				String name1 = tfname.getText();
 				int a = name1.charAt(0);
 				if (name1.equals("") || a == 32) {
@@ -376,7 +372,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				Integer num = Integer.parseInt(tfpno.getText());
+				int num = Integer.parseInt(tfpno.getText());
 				String name;
 				String addr;
 				String contact;

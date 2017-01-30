@@ -268,12 +268,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				Integer num = Integer.parseInt(tfpno.getText());
-				if (num.equals(null)) {
-					System.out.println("num");
-					throw new BlankException();
-				}
-
+				int num = Integer.parseInt(tfpno.getText());
 				String name = tfname.getText();
 				int a;
 				a = name.charAt(0);
@@ -298,7 +293,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				}
 
-				Long contact = Long.parseLong(tftel.getText());
+				long contact = Long.parseLong(tftel.getText());
 				String blgr = chbg.getSelectedItem();
 				String hist = tahis.getText();
 
