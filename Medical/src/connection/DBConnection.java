@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnection {
-	private Connection conn;
+	private static Connection conn;
 
-	public Connection connect() {
+	public static Connection connect() {
 		try {
 			// connect - network client driver
 			String dbURL = "jdbc:derby://localhost/ORACLE";
@@ -28,7 +28,7 @@ public class DBConnection {
 		return conn;
 	}
 
-	public void disconnect() {
+	public static void disconnect() {
 		try {
 			conn.close();
 		} catch (Exception e) {

@@ -8,12 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import gui.MainPage;
+import static start.Constants.*;
 
-public class PatientPage extends JFrame implements ActionListener {
+public class PatientPage extends JFrame {
 	private static final long serialVersionUID = -4553228631590052638L;
 	
-	JButton badd, bmod, bview, bback, bexit;
-	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
+	private JButton badd, bModify, bview, bback;
+	private JLabel linfo, linfo1, linfo2, linfo3;
 
 	public PatientPage() {
 		super("Patient's Information");
@@ -29,79 +30,65 @@ public class PatientPage extends JFrame implements ActionListener {
 		linfo1.setBounds(200, 150, 210, 20);
 		add(linfo1);
 
-		badd = new JButton("Add Data", new ImageIcon("images/add.gif"));
-		badd.setBounds(340, 180, 180, 30);
-		add(badd);
+		
 
 		linfo2 = new JLabel("2.  Modify  Patients  Information");
 		linfo2.setBounds(200, 250, 210, 20);
 		add(linfo2);
 
-		bmod = new JButton("Modify Data", new ImageIcon("images/bModify.png"));
-		bmod.setBounds(340, 280, 180, 30);
-		add(bmod);
+		
 
 		linfo3 = new JLabel("3. View  Patients  Information");
 		linfo3.setBounds(200, 350, 210, 20);
 		add(linfo3);
 
-		bview = new JButton("View Data", new ImageIcon("images/search.png"));
+		createButtons();
+	}
+	
+	private void createButtons() {
+		badd = new JButton(ADD_DATA, new ImageIcon(IMG_ADD));
+		badd.setBounds(340, 180, 180, 30);
+		badd.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new PatientInfo();
+				setVisible(false);
+			}
+		});
+		add(badd);
+		
+		bModify = new JButton(MODIFY_DATA, new ImageIcon(IMG_MODIFY));
+		bModify.setBounds(340, 280, 180, 30);
+		bModify.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new PatientInfomodify();
+				setVisible(false);
+			}
+		});
+		add(bModify);
+		
+		bview = new JButton(VIEW_DATA, new ImageIcon(IMG_SEARCH));
 		bview.setBounds(340, 380, 180, 30);
+		bview.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new PatientInfoView();
+				setVisible(false);
+			}
+		});
 		add(bview);
 
-		bback = new JButton("BACK", new ImageIcon("images/restore.png"));
+		bback = new JButton(BACK, new ImageIcon(IMG_RESTORE));
 		bback.setBounds(503, 545, 100, 30);
+		bback.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new MainPage();
+				setVisible(false);
+			}
+		});
 		add(bback);
-
-		// bexit=new JButton("EXIT");
-		// bexit.setBounds(730,515,100,30);
-		// add(bexit);
-
-		badd.addActionListener(new AddData());
-		bmod.addActionListener(new mod());
-		bview.addActionListener(new view());
-		// bexit.addActionListener(new exit());
-		bback.addActionListener(new back());
-
 	}
-
-	public void actionPerformed(ActionEvent ae) {
-	}
-
-	class back implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new MainPage();
-			setVisible(false);
-		}
-	}
-
-	class AddData implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new PatientInfo();
-			setVisible(false);
-		}
-	}
-
-	class mod implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new PatientInfomodify();
-			setVisible(false);
-		}
-	}
-
-	class view implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new PatientInfoView();
-			setVisible(false);
-		}
-	}
-
-	/*
-	 * class exit implements ActionListener { public void
-	 * actionPerformed(ActionEvent ae) { System.exit(0); } }
-	 */
-	public static void main(String[] args) {
-		new PatientPage();
-		System.out.println("Pacient page!");
-	}
+           
 }

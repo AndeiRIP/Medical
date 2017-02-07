@@ -10,21 +10,21 @@ import javax.swing.JLabel;
 
 import gui.pacient.PatientPage;
 import gui.report.Report;
-import start.Constants;
+import static start.Constants.*;
 import start.StartApp;
 
 public class MainPage extends JFrame {
 	private static final long serialVersionUID = -3060188223831053422L;
 
-	JButton bpat, bdoc, bbill, breport, bback, bexit;
-	JLabel linfo, linfo1, linfo2, linfo3, linfo4;
+	private JButton bpat, bdoc, bbill, breport, bback, bexit;
+	private JLabel linfo, linfo1, linfo2, linfo3, linfo4;
 
 	private static final int width = 1024;
 	private static final int height = 768;
 
 	public MainPage() {
 
-		super(Constants.APP_TITLE);
+		super(APP_TITLE);
 		setSize(width, height);
 		setVisible(true);
 		setLayout(null);
@@ -55,7 +55,7 @@ public class MainPage extends JFrame {
 	}
 
 	private void createMenuButtons() {
-		bpat = new JButton(Constants.PACIENT, new ImageIcon(Constants.IMG_PERSON));
+		bpat = new JButton(PACIENT, new ImageIcon(IMG_ADVANCES));
 		bpat.setBounds(430, 200, 180, 30);
 		bpat.addActionListener(new ActionListener() {
 			
@@ -66,7 +66,7 @@ public class MainPage extends JFrame {
 		});
 		add(bpat);
 
-		bdoc = new JButton(Constants.DOCTOR, new ImageIcon(Constants.IMG_PERSON));
+		bdoc = new JButton(DOCTOR, new ImageIcon(IMG_ADVANCES));
 		bdoc.setBounds(430, 270, 180, 30);
 		bdoc.addActionListener(new ActionListener() {
 			
@@ -77,7 +77,7 @@ public class MainPage extends JFrame {
 		});
 		add(bdoc);
 
-		bbill = new JButton(Constants.BILLING, new ImageIcon(Constants.IMG_BILLING));
+		bbill = new JButton(BILLING, new ImageIcon(IMG_BILLING));
 		bbill.setBounds(430, 340, 180, 30);
 		bbill.addActionListener(new ActionListener() {
 			
@@ -88,7 +88,7 @@ public class MainPage extends JFrame {
 		});
 		add(bbill);
 
-		breport = new JButton(Constants.REPORT, new ImageIcon(Constants.IMG_REPORT));
+		breport = new JButton(REPORT, new ImageIcon(IMG_REPORT));
 		breport.setBounds(430, 408, 180, 30);
 		breport.addActionListener(new ActionListener() {
 			
@@ -101,7 +101,7 @@ public class MainPage extends JFrame {
 	}
 
 	private void createActionButtons() {
-		bback = new JButton(Constants.BACK, new ImageIcon(Constants.IMG_BACK));
+		bback = new JButton(BACK, new ImageIcon(IMG_BACK));
 		bback.setBounds(230, 515, 100, 30);
 		bback.addActionListener(new ActionListener() {
 			
@@ -112,7 +112,7 @@ public class MainPage extends JFrame {
 		});
 		add(bback);
 
-		bexit = new JButton(Constants.EXIT, new ImageIcon(Constants.IMG_EXIT));
+		bexit = new JButton(EXIT, new ImageIcon(IMG_EXIT));
 		bexit.setBounds(730, 515, 100, 30);
 		bexit.addActionListener(new ActionListener() {
 			

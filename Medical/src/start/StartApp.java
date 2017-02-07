@@ -22,6 +22,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import gui.MainPage;
+import static start.Constants.*;
 
 public class StartApp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 4504258170212439955L;
@@ -130,10 +131,10 @@ public class StartApp extends JFrame implements ActionListener {
 		fieldsPanel.setLayout(new GridLayout(2, 2));
 		fieldsPanel.setOpaque(true);
 
-		userText = new JLabel(Constants.USERNAME);
+		userText = new JLabel(USERNAME);
 		userTextField = new JTextField(20);
 
-		passwordText = new JLabel(Constants.PASSWORD);
+		passwordText = new JLabel(PASSWORD);
 		passwordTextField = new JPasswordField(20);
 
 		fieldsPanel.add(userText);
@@ -146,10 +147,10 @@ public class StartApp extends JFrame implements ActionListener {
 		buttonsPanel.setLayout(new FlowLayout());
 		buttonsPanel.setOpaque(true);
 
-		loginBtn = new JButton(Constants.LOGIN, new ImageIcon("images/key.gif"));
+		loginBtn = new JButton(LOGIN, new ImageIcon("images/key.gif"));
 		loginBtn.addActionListener(this);
 
-		exitBtn = new JButton(Constants.EXIT, new ImageIcon("images/Keys.gif"));
+		exitBtn = new JButton(EXIT, new ImageIcon("images/Keys.gif"));
 		exitBtn.addActionListener(this);
 
 		buttonsPanel.add(loginBtn);

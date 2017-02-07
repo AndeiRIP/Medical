@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import exceptions.BlankException;
 import exceptions.NameException;
 import gui.ClsSettings;
@@ -31,6 +31,7 @@ import gui.dialog.ErrorDialog;
 import gui.dialog.ErrorDialog1;
 import gui.dialog.ErrorDialog2;
 import gui.dialog.SuccessDialog;
+import static start.Constants.*;
 
 public class PatientInfo extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1525675329129602584L;
@@ -217,13 +218,15 @@ public class PatientInfo extends JFrame implements ActionListener {
 		chrt.addItem("Semi-Private");
 		chrt.addItem("General");
 		add(chrt);
+		
+		dbConnection = DBConnection.connect(); 
 
-		try {
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			dbConnection = DriverManager.getConnection("Jdbc:Odbc:pat");
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		try {
+//			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//			dbConnection = DriverManager.getConnection("Jdbc:Odbc:pat");
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
@@ -277,7 +280,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name.length(); i++) {
-						boolean check = Character.isLetter(name.charAt(i));
+						//boolean check = Character.isLetter(name.charAt(i));
 						a = name.charAt(i);
 						System.out.print("  " + a);
 						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
@@ -361,7 +364,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 
 				Statement st = dbConnection.createStatement();
 
-				st.executeUpdate("INSERT INTO PAT VALUES('" + num + "','" + name + "','" + addr + "','" + contact
+				st.executeUpdate(SQL_INSERT_INTO + " PAT VALUES('" + num + "','" + name + "','" + addr + "','" + contact
 						+ "','" + blgr + "','" + hist + "','" + dob + "','" + current + "','" + room + "','" + dateadd
 						+ "','" + rtype + "','" + gender + "','" + docname + "');");
 
