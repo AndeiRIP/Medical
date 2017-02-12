@@ -1,3 +1,4 @@
+package gui.pacient;
 import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,14 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-class PatientTableFromDatabase extends JFrame {
+public class PatientTableFromDatabase extends JFrame {
 	private static final long serialVersionUID = -6006325187802706852L;
 	
 	static Connection cn = null;
 	Statement st = null;
 	ResultSet rs = null;
 
-	PatientTableFromDatabase() {
+	public PatientTableFromDatabase() {
 		Vector columnNames = new Vector();
 		Vector data = new Vector();
 

@@ -1,3 +1,4 @@
+package gui.doctor;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +17,15 @@ import javax.swing.JTextField;
 
 import exceptions.BlankException;
 import exceptions.NameException;
+import gui.ClsSettings;
+import gui.DocStart;
+import gui.dialog.EDt;
+import gui.dialog.ErrorDialog;
+import gui.dialog.ErrorDialog1;
+import gui.dialog.ErrorDialog2;
+import gui.dialog.SuccessDialog;
 
-class DoctorInfoAdd extends JFrame implements ActionListener {
+public class DoctorInfoAdd extends JFrame implements ActionListener {
 	static Connection cn = null;
 	Statement st = null;
 	ResultSet rs = null;
@@ -29,9 +37,9 @@ class DoctorInfoAdd extends JFrame implements ActionListener {
 
 	int x, y;
 	String str;
-	clsSettings settings = new clsSettings();
+	ClsSettings settings = new ClsSettings();
 
-	DoctorInfoAdd() {
+	public DoctorInfoAdd() {
 		super("Doctor Information");
 		setSize(1024, 768);
 		setVisible(true);
@@ -152,7 +160,7 @@ class DoctorInfoAdd extends JFrame implements ActionListener {
 
 	class back implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			new docStart();
+			new DocStart();
 			setVisible(false);
 		}
 	}

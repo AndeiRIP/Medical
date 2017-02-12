@@ -1,9 +1,10 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
+package gui;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public class clsSettings
+import javax.swing.JTextField;
+
+public class ClsSettings
  { 	
  
 /*	public JLabel setJLabel(JLabel lbl, int sLeft, int sTop, int sWidth, int sHeight, boolean setBool)

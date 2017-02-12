@@ -1,9 +1,23 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
+package gui.doctor;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-class DoctorInfoView extends JFrame implements ActionListener
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import gui.DocStart;
+
+public class DoctorInfoView extends JFrame implements ActionListener
 {
 
 	static Connection cn=null;
@@ -19,7 +33,7 @@ class DoctorInfoView extends JFrame implements ActionListener
 	TextArea taadd,taspecial,tapatlist;
 	JButton bsub,bclr,bback;
 	
-	DoctorInfoView()
+	public DoctorInfoView()
 	{
 	super("Doctor Information");
 	setSize(1024,768);
@@ -160,7 +174,7 @@ class back implements ActionListener
 	{
 		public void actionPerformed(ActionEvent ae)
 		{
-			new docStart();
+			new DocStart();
 			setVisible(false);
 		}
 	}
@@ -187,7 +201,7 @@ class submit implements ActionListener
 		try{
 
 		tapatlist.setText("");			
-		Integer num=Integer.parseInt(tfdid.getText());
+		int num=Integer.parseInt(tfdid.getText());
 		String name;
 		String addr;
 		String contact;

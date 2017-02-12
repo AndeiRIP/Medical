@@ -1,9 +1,10 @@
+package gui.dialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class SuccessDialog2 
 	{
-		SuccessDialog2()
+		public SuccessDialog2()
 		{
 		 String message = "Data Modified successfully!";
 		 JOptionPane.showMessageDialog(new JFrame(), message, "Done!",

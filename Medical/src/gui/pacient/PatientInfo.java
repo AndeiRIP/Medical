@@ -1,3 +1,4 @@
+package gui.pacient;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;
@@ -7,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,10 +22,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import exceptions.BlankException;
 import exceptions.NameException;
+import gui.ClsSettings;
+import gui.dialog.EDt;
+import gui.dialog.ErrorDialog;
+import gui.dialog.ErrorDialog1;
+import gui.dialog.ErrorDialog2;
+import gui.dialog.SuccessDialog;
+import static start.Constants.*;
 
-class PatientInfo extends JFrame implements ActionListener {
+public class PatientInfo extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1525675329129602584L;
 	
 	static Connection dbConnection = null;
@@ -44,9 +52,9 @@ class PatientInfo extends JFrame implements ActionListener {
 	String dialogmessage;
 	String dialogs;
 	int dialogtype = JOptionPane.PLAIN_MESSAGE;
-	clsSettings settings = new clsSettings();
+	ClsSettings settings = new ClsSettings();
 
-	PatientInfo() {
+	public PatientInfo() {
 		super("Add Patient Information");
 		setSize(1024, 768);
 		setVisible(true);
@@ -210,13 +218,15 @@ class PatientInfo extends JFrame implements ActionListener {
 		chrt.addItem("Semi-Private");
 		chrt.addItem("General");
 		add(chrt);
+		
+		dbConnection = DBConnection.connect(); 
 
-		try {
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			dbConnection = DriverManager.getConnection("Jdbc:Odbc:pat");
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		try {
+//			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//			dbConnection = DriverManager.getConnection("Jdbc:Odbc:pat");
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
@@ -261,12 +271,7 @@ class PatientInfo extends JFrame implements ActionListener {
 
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				Integer num = Integer.parseInt(tfpno.getText());
-				if (num.equals(null)) {
-					System.out.println("num");
-					throw new BlankException();
-				}
-
+				int num = Integer.parseInt(tfpno.getText());
 				String name = tfname.getText();
 				int a;
 				a = name.charAt(0);
@@ -275,7 +280,7 @@ class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name.length(); i++) {
-						boolean check = Character.isLetter(name.charAt(i));
+						//boolean check = Character.isLetter(name.charAt(i));
 						a = name.charAt(i);
 						System.out.print("  " + a);
 						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
@@ -291,7 +296,7 @@ class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				}
 
-				Long contact = Long.parseLong(tftel.getText());
+				long contact = Long.parseLong(tftel.getText());
 				String blgr = chbg.getSelectedItem();
 				String hist = tahis.getText();
 
@@ -359,7 +364,7 @@ class PatientInfo extends JFrame implements ActionListener {
 
 				Statement st = dbConnection.createStatement();
 
-				st.executeUpdate("INSERT INTO PAT VALUES('" + num + "','" + name + "','" + addr + "','" + contact
+				st.executeUpdate(SQL_INSERT_INTO + " PAT VALUES('" + num + "','" + name + "','" + addr + "','" + contact
 						+ "','" + blgr + "','" + hist + "','" + dob + "','" + current + "','" + room + "','" + dateadd
 						+ "','" + rtype + "','" + gender + "','" + docname + "');");
 

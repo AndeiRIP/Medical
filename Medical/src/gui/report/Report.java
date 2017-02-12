@@ -1,9 +1,20 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
+package gui.report;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
-class Report extends JFrame implements ActionListener
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import gui.MainPage;
+import gui.doctor.DoctorTableFromDatabase;
+import gui.pacient.PatientTableFromDatabase;
+
+public class Report extends JFrame implements ActionListener
 {
 	static Connection cn=null;
 	static Connection cn2=null;
@@ -15,7 +26,7 @@ class Report extends JFrame implements ActionListener
 	JButton bpat,bdoc,bback;
 	JLabel lpat,ldoc;
 
-	Report()
+	public Report()
 	{
 		super("Reports");
 		setSize(1024,768);

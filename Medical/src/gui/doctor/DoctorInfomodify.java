@@ -1,3 +1,4 @@
+package gui.doctor;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +18,15 @@ import javax.swing.JTextField;
 
 import exceptions.BlankException;
 import exceptions.NameException;
+import gui.ClsSettings;
+import gui.DocStart;
+import gui.dialog.EDt;
+import gui.dialog.ErrorDialog;
+import gui.dialog.ErrorDialog1;
+import gui.dialog.ErrorDialog2;
+import gui.dialog.SuccessDialog2;
 
-class DoctorInfomodify extends JFrame implements ActionListener {
+public class DoctorInfomodify extends JFrame implements ActionListener {
 
 	static Connection cn = null;
 	Statement st = null;
@@ -31,9 +39,9 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 
 	int x, y;
 	String str;
-	clsSettings settings = new clsSettings();
+	ClsSettings settings = new ClsSettings();
 
-	DoctorInfomodify() {
+	public DoctorInfomodify() {
 		super("Doctor Information");
 		setSize(1024, 768);
 		setVisible(true);
@@ -165,7 +173,7 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 
 	class back implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			new docStart();
+			new DocStart();
 			setVisible(false);
 		}
 	}
@@ -175,7 +183,7 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				Integer num = Integer.parseInt(tfdid.getText());
+				int num = Integer.parseInt(tfdid.getText());
 				String name;
 				String addr;
 				String contact;
@@ -215,26 +223,24 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 	class modify implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
-
-				Integer num1 = Integer.parseInt(tfdid.getText());
-				if (num1.equals(null)) {
-					System.out.println("num");
-					throw new BlankException();
-				}
-
 				String name1 = tfname.getText();
+				int num1 = Integer.parseInt(tfdid.getText());
 				int a;
+				
 				a = name1.charAt(0);
 				if (name1.equals("") || a == 32) {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name1.length(); i++) {
 						boolean check = Character.isLetter(name1.charAt(i));
-						a = name1.charAt(i);
-						System.out.print("  " + a);
-						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
+						if (!check) {
 							throw new NameException();
 						}
+//						a = name1.charAt(i);
+//						System.out.print("  " + a);
+//						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
+//							throw new NameException();
+//						}
 
 					}
 				}
@@ -251,12 +257,9 @@ class DoctorInfomodify extends JFrame implements ActionListener {
 				String workf1 = tfworkf.getText();
 				String workt1 = tfworkt.getText();
 
-				// Statement st1=cn.createStatement();
-
 				String str = "UPDATE DOC SET name=?,address=?,contact=?,specialization=?,workfrom=?,workto=? WHERE did=?";
 
-				Statement st1 = cn.createStatement();
-
+				cn.createStatement();
 				PreparedStatement psmt = cn.prepareStatement(str);
 				psmt.setString(1, name1);
 				psmt.setString(2, addr1);
