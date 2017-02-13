@@ -34,9 +34,9 @@ import static start.Constants.*;
 public class PatientInfo extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1525675329129602584L;
 
-	private JLabel lmain, lpi, lname, ladd, ltel, lmi, lbg, ldob, lhis, lcur, lpno, lroom, ldateadd, lgender, lrtype,
+	private JLabel lmain, lpi, lname, ladd, lPhone, lmi, lbg, ldob, lhis, lcur, labelCNP, lroom, ldateadd, lgender, lrtype,
 			ldtip, ldtip2, ldocname;
-	private JTextField tfname, tftel, tfdob, tfpno, tfroom, tfdateadd, tfdocname;
+	private JTextField tfname, tfPhone, tfdob, tfCNP, tfroom, tfdateadd, tfdocname;
 	private TextArea taadd, tahis, tacur;
 	private Choice chbg, chrt;
 	private CheckboxGroup cbmf;
@@ -77,22 +77,22 @@ public class PatientInfo extends JFrame implements ActionListener {
 		taadd.setBounds(270, 138, 250, 100);
 		add(taadd);
 
-		ltel = new JLabel("Contact :");
-		ltel.setBounds(575, 138, 50, 25);
-		add(ltel);
+		lPhone = new JLabel("Contact :");
+		lPhone.setBounds(575, 138, 50, 25);
+		add(lPhone);
 
-		lpno = new JLabel("Patient No.:");
-		lpno.setBounds(570, 97, 70, 25);
-		add(lpno);
+		labelCNP = new JLabel("CNP:");
+		labelCNP.setBounds(575, 97, 70, 25);
+		add(labelCNP);
 
-		tftel = new JTextField(30);
-		tftel.setBounds(640, 138, 250, 20);
-		add(tftel);
-		settings.Numvalidator(tftel);
+		tfPhone = new JTextField(30);
+		tfPhone.setBounds(640, 138, 250, 20);
+		add(tfPhone);
+		settings.Numvalidator(tfPhone);
 
-		tfpno = new JTextField(30);
-		tfpno.setBounds(643, 97, 50, 20);
-		add(tfpno);
+		tfCNP = new JTextField(30);
+		tfCNP.setBounds(610, 97, 100, 20);
+		add(tfCNP);
 
 		// END
 
@@ -229,12 +229,12 @@ public class PatientInfo extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 
 			tfname.setText("");
-			tftel.setText("");
+			tfPhone.setText("");
 			tfdob.setText("");
 			taadd.setText("");
 			tahis.setText("");
 			tacur.setText("");
-			tfpno.setText("");
+			tfCNP.setText("");
 			tfroom.setText("");
 			tfdateadd.setText("");
 		}
@@ -253,7 +253,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				int pid = Integer.parseInt(tfpno.getText());
+				int cnp = Integer.parseInt(tfCNP.getText());
 				String name = tfname.getText();
 				int a;
 				a = name.charAt(0);
@@ -278,7 +278,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				}
 
-				long contact = Long.parseLong(tftel.getText());
+				long contact = Long.parseLong(tfPhone.getText());
 				String bloodGroup = chbg.getSelectedItem();
 				String history = tahis.getText();
 
@@ -324,7 +324,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 
 				Statement st = DBConnection.connect().createStatement();
 
-				String sqlStatement = SQL_INSERT_INTO + " " + TABLE_PATIENT + " VALUES(" + pid + ",'" + name + "','"
+				String sqlStatement = SQL_INSERT_INTO + " " + TABLE_PATIENT + " VALUES(" + cnp + ",'" + name + "','"
 						+ address + "'," + contact + ",'" + bloodGroup + "','" + history + "','" + transofrmDate(dateOfBirth) + "','"
 						+ diagnostic + "'," + roomNo + ",'" + transofrmDate(dateAdded) + "','" + roomType
 						+ "','" + gender + "','" + doctorName + "')";

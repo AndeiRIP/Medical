@@ -1,4 +1,7 @@
 package gui.pacient;
+
+import static start.Constants.*;
+
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;
@@ -6,7 +9,6 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import exceptions.BlankException;
 import exceptions.NameException;
 import gui.ClsSettings;
@@ -27,19 +30,15 @@ import gui.dialog.SuccessDialog1;
 
 public class PatientInfomodify extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 2626190289676587612L;
-	
-	static Connection cn = null;
-	Statement st = null;
-	ResultSet rs = null;
 
-	JLabel lmain, lpi, lname, ladd, ltel, lmi, lbg, ldob, lhis, lcur, lpno, lnote, lroom, ldateadd, lgender, lrtype,
+	private JLabel lmain, lpi, lname, ladd, ltel, lmi, lbg, ldob, lhis, lcur, labelCNP, lnote, lroom, ldateadd, lgender, lrtype,
 			ldtip, ldtip2, ldocname;
-	JTextField tfname, tftel, tfdob, tfpno, tfroom, tfdateadd, tfdocname;
-	TextArea taadd, tahis, tacur;
-	JButton bsub, bclr, bback, bmod;
-	Choice chbg, chrt;
-	CheckboxGroup cbmf;
-	Checkbox cbm, cbf;
+	private JTextField tfname, tftel, tfdob, tfCNP, tfroom, tfdateadd, tfdocname;
+	private TextArea taadd, tahis, tacur;
+	private JButton bsub, bclr, bback, bmod;
+	private Choice chbg, chrt;
+	private CheckboxGroup cbmf;
+	private Checkbox cbm, cbf;
 
 	ClsSettings settings = new ClsSettings();
 
@@ -83,18 +82,18 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		ltel.setBounds(575, 138, 50, 25);
 		add(ltel);
 
-		lpno = new JLabel("Patient No.:");
-		lpno.setBounds(570, 97, 70, 25);
-		add(lpno);
+		labelCNP = new JLabel("CNP:");
+		labelCNP.setBounds(575, 97, 70, 25);
+		add(labelCNP);
 
 		tftel = new JTextField(30);
 		tftel.setBounds(640, 138, 250, 20);
 		add(tftel);
 		settings.Numvalidator(tftel);
 
-		tfpno = new JTextField(30);
-		tfpno.setBounds(643, 97, 50, 20);
-		add(tfpno);
+		tfCNP = new JTextField(30);
+		tfCNP.setBounds(610, 97, 100, 20);
+		add(tfCNP);
 
 		// END
 
@@ -188,7 +187,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		chrt.addItem("General");
 		add(chrt);
 
-		ldtip = new JLabel("(dd-mm-yyyy)");
+		ldtip = new JLabel("(yyyy-mm-dd)");
 		ldtip.setBounds(810, 305, 100, 20);
 		add(ldtip);
 
@@ -200,7 +199,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		tfdocname.setBounds(720, 510, 250, 20);
 		add(tfdocname);
 
-		ldtip2 = new JLabel("(dd-mm-yyyy)");
+		ldtip2 = new JLabel("(yyyy-mm-dd)");
 		ldtip2.setBounds(782, 180, 100, 20);
 		add(ldtip2);
 
@@ -219,16 +218,6 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		bback = new JButton("BACK", new ImageIcon("images/restore.png"));
 		bback.setBounds(680, 643, 90, 30);
 		add(bback);
-
-		try {
-
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			cn = DriverManager.getConnection("Jdbc:Odbc:pat");
-		}
-
-		catch (Exception e) {
-			System.out.println(e);
-		}
 
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
@@ -255,7 +244,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 			taadd.setText("");
 			tahis.setText("");
 			tacur.setText("");
-			tfpno.setText("");
+			tfCNP.setText("");
 			tfroom.setText("");
 			tfdateadd.setText("");
 			tfdocname.setText("");
@@ -273,14 +262,14 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				int num1 = Integer.parseInt(tfpno.getText());
+				int cnp = Integer.parseInt(tfCNP.getText());
 				String name1 = tfname.getText();
 				int a = name1.charAt(0);
 				if (name1.equals("") || a == 32) {
 					throw new BlankException();
 				}
 				for (int i = 0; i < name1.length(); i++) {
-					boolean check = Character.isLetter(name1.charAt(i));
+					//boolean check = Character.isLetter(name1.charAt(i));
 					a = name1.charAt(i);
 					System.out.print(a);
 					if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32))) {
@@ -332,11 +321,14 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 
 				// Statement st1=cn.createStatement();
 
-				String str = "UPDATE PAT SET name=?,address=?,contact=?,history=?,bloodgroup=?,dob=?,current=?,roomno=?,dateadd=?,rtype=?,gender=?,docname=? WHERE patientno=?";
+				String str = SQL_UPDATE + " " + TABLE_PATIENT + " " + SQL_SET
+						+ " Name=?, Address=?, Contact=?, History=?, BloodGroup=?, DoB=?, Diagnostic=?, RoomNo=?, DateAdd=?, rType=?, Gender=?, DocName=? "
+						+ SQL_WHERE + " CNP=?";
 
-				Statement st1 = cn.createStatement();
+				Connection connect = DBConnection.connect();
+				connect.createStatement();
 
-				PreparedStatement psmt = cn.prepareStatement(str);
+				PreparedStatement psmt = connect.prepareStatement(str);
 				psmt.setString(1, name1);
 				psmt.setString(2, addr1);
 				psmt.setString(3, contact1);
@@ -349,11 +341,12 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 				psmt.setString(10, rtype1);
 				psmt.setString(11, gender1);
 				psmt.setString(12, docname);
-				psmt.setInt(13, num1);
+				psmt.setInt(13, cnp);
 
 				psmt.executeUpdate();
 				new SuccessDialog1();
 
+				DBConnection.disconnect();
 				// st.executeUpdate("UPDATE PAT SET
 				// patientno="+num1+",name='"+name1+"',address='"+addr1+"',contact='"+contact1+"',history='"+hist1+"',dd='"+dd1+"',mm='"+mm1+"',yy='"+yy1+"',current='"+current1+"'
 				// WHERE patientno='"+num1+"';");
@@ -372,7 +365,7 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				int num = Integer.parseInt(tfpno.getText());
+				int cnp = Integer.parseInt(tfCNP.getText());
 				String name;
 				String addr;
 				String contact;
@@ -386,24 +379,26 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 				String gender;
 				String docname;
 
-				Statement st = cn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM PAT WHERE patientno=" + num);
+				Statement st = DBConnection.connect().createStatement();
+				ResultSet rs = st.executeQuery(SQL_SELECT + " * "+ SQL_FROM + " " + TABLE_PATIENT + " " +
+				SQL_WHERE + " CNP=" + cnp);
 
 				if (rs.next()) {
-					num = rs.getInt("patientno");
-					name = rs.getString("name");
-					addr = rs.getString("address");
-					contact = rs.getString("contact");
-					hist = rs.getString("history");
-					dob = rs.getString("dob");
-					current = rs.getString("current");
-					blgr = rs.getString("bloodgroup");
-					roomno = rs.getString("roomno");
-					dateadd = rs.getString("dateadd");
-					rtype = rs.getString("rtype");
-					gender = rs.getString("gender");
-					docname = rs.getString("docname");
+					cnp = rs.getInt("CNP");
+					name = rs.getString("Name");
+					addr = rs.getString("Address");
+					contact = rs.getString("Contact");
+					hist = rs.getString("History");
+					dob = rs.getString("DoB");
+					current = rs.getString("Diagnostic");
+					blgr = rs.getString("BloodGroup");
+					roomno = rs.getString("RoomNo");
+					dateadd = rs.getString("DateAdd");
+					rtype = rs.getString("rType");
+					gender = rs.getString("Gender");
+					docname = rs.getString("DocName");	
 
+					tfCNP.setText(cnp + "");
 					tfname.setText(name);
 					tftel.setText(contact);
 					tfdob.setText(dob);
@@ -415,17 +410,19 @@ public class PatientInfomodify extends JFrame implements ActionListener {
 					tfdateadd.setText(dateadd);
 					tfdocname.setText(docname);
 					chrt.select(rtype);
+					
 					if (gender.equals("male")) {
 						System.out.println(gender);
 						cbm.setState(true);
 					}
+					
 					if (gender.equals("female")) {
 						System.out.println(gender);
 						cbf.setState(true);
 					}
-
 				}
 
+				DBConnection.disconnect();
 			} catch (SQLException sq) {
 				System.out.println(sq);
 			}
