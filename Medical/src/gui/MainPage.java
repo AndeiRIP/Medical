@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import gui.consultation.ConsultationView;
 import gui.pacient.PatientPage;
 import gui.report.Report;
 import static start.Constants.*;
@@ -16,8 +17,8 @@ import start.StartApp;
 public class MainPage extends JFrame {
 	private static final long serialVersionUID = -3060188223831053422L;
 
-	private JButton bpat, bdoc, bbill, breport, bback, bexit;
-	private JLabel linfo, linfo1, linfo2, linfo3, linfo4;
+	private JButton bpat, bdoc, bbill, breport, bCons, bback, bexit;
+	private JLabel linfo, linfo1, linfo2, linfo3, linfo4, lCons;
 
 	private static final int width = 1024;
 	private static final int height = 768;
@@ -48,6 +49,10 @@ public class MainPage extends JFrame {
 		linfo4 = new JLabel("4. Patient and Doctor related Data");
 		linfo4.setBounds(50, 413, 250, 20);
 		add(linfo4);
+		
+		lCons = new JLabel("5. Patient and Doctor related Data");
+		lCons.setBounds(50, 466, 250, 20);
+		add(lCons);
      
 		createMenuButtons();
 		createActionButtons();
@@ -98,11 +103,22 @@ public class MainPage extends JFrame {
 			}
 		});
 		add(breport);
+		
+		bCons = new JButton("Consultation", new ImageIcon(IMG_INFO));
+		bCons.setBounds(430, 470, 180, 30);
+		bCons.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				new ConsultationView();
+				setVisible(false);
+			}
+		});
+		add(bCons);
 	}
 
 	private void createActionButtons() {
 		bback = new JButton(BACK, new ImageIcon(IMG_BACK));
-		bback.setBounds(230, 515, 100, 30);
+		bback.setBounds(230, 545, 100, 30);
 		bback.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +129,7 @@ public class MainPage extends JFrame {
 		add(bback);
 
 		bexit = new JButton(EXIT, new ImageIcon(IMG_EXIT));
-		bexit.setBounds(730, 515, 100, 30);
+		bexit.setBounds(730, 545, 100, 30);
 		bexit.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {

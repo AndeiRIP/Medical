@@ -45,6 +45,7 @@ public class Constants {
 	public static final String IMG_MODIFY = "images/bModify.png";
 	public static final String IMG_SEARCH = "images/search.png";
 	public static final String IMG_RESTORE = "images/restore.png";
+	public static final String IMG_INFO = "images/info.gif";
 	
 	public static final String IMG_BACK = "images/preview_Hover.png";
 	public static final String IMG_EXIT = "images/exits.png";

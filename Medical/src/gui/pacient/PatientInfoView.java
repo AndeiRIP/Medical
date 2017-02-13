@@ -196,7 +196,14 @@ public class PatientInfoView extends JFrame implements ActionListener {
 
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
-		bback.addActionListener(new back());
+		bback.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new PatientPage();
+				setVisible(false);
+			}
+		});
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -218,13 +225,6 @@ public class PatientInfoView extends JFrame implements ActionListener {
 			tfmf.setText("");
 			tfbg.setText("");
 
-		}
-	}
-
-	class back implements ActionListener {
-		public void actionPerformed(ActionEvent ae) {
-			new PatientPage();
-			setVisible(false);
 		}
 	}
 
