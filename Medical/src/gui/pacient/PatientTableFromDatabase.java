@@ -29,7 +29,6 @@ public class PatientTableFromDatabase extends JFrame {
 
 		try {
 			// Connect to the Database
-
 			Statement st = DBConnection.connect().createStatement();
 
 			// Read data from a table
