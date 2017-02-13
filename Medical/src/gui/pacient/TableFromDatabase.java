@@ -16,14 +16,14 @@ import javax.swing.JTable;
 
 import connection.DBConnection;
 
-public class PatientTableFromDatabase extends JFrame {
+public class TableFromDatabase extends JFrame {
 	private static final long serialVersionUID = -6006325187802706852L;
 	
 	static Connection cn = null;
 	Statement st = null;
 	ResultSet rs = null;
-
-	public PatientTableFromDatabase() {
+	
+	public TableFromDatabase(String tableName) {
 		Vector<String> columnNames = new Vector<String>();
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
@@ -32,7 +32,7 @@ public class PatientTableFromDatabase extends JFrame {
 			Statement st = DBConnection.connect().createStatement();
 
 			// Read data from a table
-			String sql = SQL_SELECT + " * " + SQL_FROM + " " + TABLE_PATIENT;
+			String sql = SQL_SELECT + " * " + SQL_FROM + " " + tableName;
 			ResultSet rs = st.executeQuery(sql);
 			ResultSetMetaData md = rs.getMetaData();
 			int columns = md.getColumnCount();
@@ -60,7 +60,15 @@ public class PatientTableFromDatabase extends JFrame {
 		DBConnection.disconnect();
 		
 		// Create table with database data
-		JTable table = new JTable(data, columnNames);
+		JTable table = new JTable(data, columnNames) {
+			private static final long serialVersionUID = 7196473652410363023L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		}; 
+		
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		getContentPane().add(scrollPane);
@@ -70,7 +78,7 @@ public class PatientTableFromDatabase extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		PatientTableFromDatabase frame = new PatientTableFromDatabase();
+		TableFromDatabase frame = new TableFromDatabase(TABLE_PATIENT);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
