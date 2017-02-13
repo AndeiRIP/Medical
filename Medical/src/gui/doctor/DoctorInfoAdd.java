@@ -1,10 +1,11 @@
 package gui.doctor;
+import static start.Constants.*;
+
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -26,18 +27,16 @@ import gui.dialog.ErrorDialog2;
 import gui.dialog.SuccessDialog;
 
 public class DoctorInfoAdd extends JFrame implements ActionListener {
-	static Connection cn = null;
-	Statement st = null;
-	ResultSet rs = null;
+	private static final long serialVersionUID = -6737883779709651407L;
+	
+	private static Connection cn = null;
 
-	JLabel lmain, ldi, lname, ladd, ltel, lspecial, ldid, ldspec, lwork, lworkfrom, lworkto, lfee;
-	JTextField tfname, tftel, tfdid, tfworkf, tfworkt, tffee;
-	TextArea taadd, tacur, taspecial;
-	JButton bsub, bclr, bback;
-
-	int x, y;
-	String str;
-	ClsSettings settings = new ClsSettings();
+	private JLabel lmain, ldi, lname, ladd, ltel,  ldid, ldspec, lwork, lworkfrom, lworkto;
+	private JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
+	private TextArea taadd, taspecial;
+	private JButton bsub, bclr, bback;
+	
+	private ClsSettings settings = new ClsSettings();
 
 	public DoctorInfoAdd() {
 		super("Doctor Information");
@@ -209,7 +208,7 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 
 				Statement st = cn.createStatement();
 
-				st.executeUpdate("INSERT INTO DOC VALUES('" + num + "','" + name + "','" + addr + "','" + contact
+				st.executeUpdate(SQL_INSERT_INTO + " " + TABLE_DOCTOR + " VALUES('" + num + "','" + name + "','" + addr + "','" + contact
 						+ "','" + spec + "','" + workf + "','" + workt + "');");
 
 				new SuccessDialog();

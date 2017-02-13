@@ -1,4 +1,5 @@
 package gui.pacient;
+
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;
@@ -7,11 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -19,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import connection.DBConnection;
@@ -35,24 +33,17 @@ import static start.Constants.*;
 
 public class PatientInfo extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1525675329129602584L;
-	
-	static Connection dbConnection = null;
-	Statement st = null;
-	ResultSet rs = null;
 
-	JLabel lmain, lpi, lname, ladd, ltel, lmi, lbg, ldob, lhis, lcur, lpno, lroom, ldateadd, lgender, lrtype, ldtip,
-			ldtip2, ldocname;
-	JTextField tfname, tftel, tfdob, tfpno, tfroom, tfdateadd, tfdocname;
-	TextArea taadd, tahis, tacur;
-	Choice chbg, chrt;
-	CheckboxGroup cbmf;
-	Checkbox cbm, cbf;
-	JButton bsub, bclr, bback;
+	private JLabel lmain, lpi, lname, ladd, ltel, lmi, lbg, ldob, lhis, lcur, lpno, lroom, ldateadd, lgender, lrtype,
+			ldtip, ldtip2, ldocname;
+	private JTextField tfname, tftel, tfdob, tfpno, tfroom, tfdateadd, tfdocname;
+	private TextArea taadd, tahis, tacur;
+	private Choice chbg, chrt;
+	private CheckboxGroup cbmf;
+	private Checkbox cbm, cbf;
+	private JButton bsub, bclr, bback;
 
-	String dialogmessage;
-	String dialogs;
-	int dialogtype = JOptionPane.PLAIN_MESSAGE;
-	ClsSettings settings = new ClsSettings();
+	private ClsSettings settings = new ClsSettings();
 
 	public PatientInfo() {
 		super("Add Patient Information");
@@ -142,7 +133,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 		add(tfdob);
 		// settings.Numvalidator(tfdob);
 
-		ldtip = new JLabel("(dd-mm-yyyy)");
+		ldtip = new JLabel("(yyyy-mm-dd)");
 		ldtip.setBounds(782, 305, 100, 20);
 		add(ldtip);
 
@@ -179,7 +170,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 		tfdocname.setBounds(720, 510, 250, 20);
 		add(tfdocname);
 
-		ldtip2 = new JLabel("(dd-mm-yyyy)");
+		ldtip2 = new JLabel("(yyyy-mm-dd)");
 		ldtip2.setBounds(782, 180, 100, 20);
 		add(ldtip2);
 
@@ -218,22 +209,13 @@ public class PatientInfo extends JFrame implements ActionListener {
 		chrt.addItem("Semi-Private");
 		chrt.addItem("General");
 		add(chrt);
-		
-		dbConnection = DBConnection.connect(); 
-
-//		try {
-//			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-//			dbConnection = DriverManager.getConnection("Jdbc:Odbc:pat");
-//		} catch (Exception e) {
-//			System.out.println(e);
-//		}
 
 		bclr.addActionListener(new clear());
-		bsub.addActionListener(new submit());
+		bsub.addActionListener(new SubmitPacientInfo());
 		bback.addActionListener(new back());
 
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println(df.format(cal.getTime()));
 
 	}
@@ -265,13 +247,13 @@ public class PatientInfo extends JFrame implements ActionListener {
 		}
 	}
 
-	class submit implements ActionListener, ItemListener {
+	class SubmitPacientInfo implements ActionListener, ItemListener {
 		public void itemStateChanged(ItemEvent ie) {
 		}
 
 		public void actionPerformed(ActionEvent ae) {
 			try {
-				int num = Integer.parseInt(tfpno.getText());
+				int pid = Integer.parseInt(tfpno.getText());
 				String name = tfname.getText();
 				int a;
 				a = name.charAt(0);
@@ -280,7 +262,7 @@ public class PatientInfo extends JFrame implements ActionListener {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name.length(); i++) {
-						//boolean check = Character.isLetter(name.charAt(i));
+						// boolean check = Character.isLetter(name.charAt(i));
 						a = name.charAt(i);
 						System.out.print("  " + a);
 						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
@@ -290,53 +272,47 @@ public class PatientInfo extends JFrame implements ActionListener {
 					}
 				}
 
-				String addr = taadd.getText();
-				if (addr.equals(null)) {
+				String address = taadd.getText();
+				if (address.equals(null)) {
 					System.out.println("addr");
 					throw new BlankException();
 				}
 
 				long contact = Long.parseLong(tftel.getText());
-				String blgr = chbg.getSelectedItem();
-				String hist = tahis.getText();
+				String bloodGroup = chbg.getSelectedItem();
+				String history = tahis.getText();
 
-				String dob = tfdob.getText();
-				if (dob.equals(null)) {
+				String dateOfBirth = tfdob.getText();
+				if (dateOfBirth.equals(null)) {
 					System.out.println("dob");
 					throw new BlankException();
+				} else if (dateOfBirth.length() < 5) {
+					dateOfBirth = "01.01.1000";
 				}
 
-				String current = tacur.getText();
-				if (current.equals(null)) {
+				String diagnostic = tacur.getText();
+				if (diagnostic.equals(null)) {
 					System.out.println("current");
 					throw new BlankException();
 				}
 
-				String room = tfroom.getText();
+				String roomNo = tfroom.getText();
 
-				String dateadd = tfdateadd.getText();
-				if (dateadd.equals(null)) {
+				String dateAdded = tfdateadd.getText();
+				if (dateAdded.equals(null)) {
 					System.out.println("dateadd");
 					throw new BlankException();
 				}
 
-				String docname = tfdocname.getText();
-				if (docname.equals(null)) {
+				String doctorName = tfdocname.getText();
+				if (doctorName.equals(null)) {
 					System.out.println("docname");
 					throw new BlankException();
 				}
 
-				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-				// DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-				df.setLenient(false);
+				System.out.println(dateAdded);
 
-				java.util.Date myDate = df.parse(dateadd);
-
-				System.out.println(dateadd);
-
-				String rtype = chrt.getSelectedItem();
-
+				String roomType = chrt.getSelectedItem();
 				String gender = "";
 
 				if (cbm.getState() == true) {
@@ -346,41 +322,17 @@ public class PatientInfo extends JFrame implements ActionListener {
 					gender = "female";
 				}
 
-				// Date dateadd=tfdateadd.getString();
-				/*
-				 * String query = "SELECT * FROM PAT WHERE num='" + num+ "'";
-				 * 
-				 * ResultSet rs = st.executeQuery(query); int foundrec = 0;
-				 * while (rs.next()) { dialogmessage =
-				 * "Record Already Exists in DataBase!!!"; dialogtype =
-				 * JOptionPane.WARNING_MESSAGE;
-				 * JOptionPane.showMessageDialog((Component)null, dialogmessage,
-				 * dialogs, dialogtype);
-				 * 
-				 * foundrec = 1;
-				 * 
-				 * } if (foundrec == 0) {
-				 */
+				Statement st = DBConnection.connect().createStatement();
 
-				Statement st = dbConnection.createStatement();
-
-				st.executeUpdate(SQL_INSERT_INTO + " PAT VALUES('" + num + "','" + name + "','" + addr + "','" + contact
-						+ "','" + blgr + "','" + hist + "','" + dob + "','" + current + "','" + room + "','" + dateadd
-						+ "','" + rtype + "','" + gender + "','" + docname + "');");
+				String sqlStatement = SQL_INSERT_INTO + " " + TABLE_PATIENT + " VALUES(" + pid + ",'" + name + "','"
+						+ address + "'," + contact + ",'" + bloodGroup + "','" + history + "','" + transofrmDate(dateOfBirth) + "','"
+						+ diagnostic + "'," + roomNo + ",'" + transofrmDate(dateAdded) + "','" + roomType
+						+ "','" + gender + "','" + doctorName + "')";
+				st.executeUpdate(sqlStatement);
 
 				new SuccessDialog();
+				DBConnection.disconnect();
 
-				/*
-				 * } else { dialogmessage = "Empty Record !!!"; dialogtype =
-				 * JOptionPane.WARNING_MESSAGE;
-				 * JOptionPane.showMessageDialog((Component)null, dialogmessage,
-				 * dialogs, dialogtype);
-				 * 
-				 * }
-				 */
-
-			} catch (ParseException e) {
-				new EDt();
 			} catch (BlankException be) {
 				new ErrorDialog2();
 			} catch (NumberFormatException nfe) {
@@ -395,6 +347,12 @@ public class PatientInfo extends JFrame implements ActionListener {
 			}
 
 		}
+	}
+
+	private Date transofrmDate(String date) {
+		Date myDate = Date.valueOf(date);
+		return myDate;
+
 	}
 
 }

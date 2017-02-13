@@ -4,6 +4,11 @@ public class Constants {
 	//SQL
 	public static final String SQL_INSERT_INTO = "INSERT INTO";
 	
+	// SQL Tables
+	public static final String TABLE_PATIENT = "PATIENT";
+	public static final String TABLE_DOCTOR = "DOCTOR";
+	public static final String TABLE_CONSULTATION = "CONSULTATION";
+	
 	// startup
 	public static final String AUTH_SUCCESSFULL = "Successful Authentication";
 	public static final String APP_TITLE = "Hospital Managment System";
