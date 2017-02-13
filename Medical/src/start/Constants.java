@@ -3,6 +3,8 @@ package start;
 public class Constants {
 	//SQL
 	public static final String SQL_INSERT_INTO = "INSERT INTO";
+	public static final String SQL_SELECT = "SELECT";
+	public static final String SQL_FROM = "FROM";
 	
 	// SQL Tables
 	public static final String TABLE_PATIENT = "PATIENT";
