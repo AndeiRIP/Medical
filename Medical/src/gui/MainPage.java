@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import gui.consultation.ConsultationView;
+import gui.consultation.ConsultationPage;
 import gui.pacient.PatientPage;
 import gui.report.Report;
 import static start.Constants.*;
@@ -109,7 +109,7 @@ public class MainPage extends JFrame {
 		bCons.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				new ConsultationView();
+				new ConsultationPage();
 				setVisible(false);
 			}
 		});

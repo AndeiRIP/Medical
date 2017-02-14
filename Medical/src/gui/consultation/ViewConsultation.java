@@ -1,12 +1,16 @@
 package gui.consultation;
 
-import static start.Constants.*;
+import static start.Constants.BACK;
+import static start.Constants.SQL_FROM;
+import static start.Constants.SQL_SELECT;
+import static start.Constants.SQL_WHERE;
+import static start.Constants.TABLE_CONSULTATION;
+import static start.Constants.TABLE_PATIENT;
 
 import java.awt.Choice;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,10 +24,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import connection.DBConnection;
-import exceptions.BlankException;
 import gui.dialog.SuccessDialog;
 
-public class NewConsultation extends JFrame {
+public class ViewConsultation extends JFrame {
 	private static final long serialVersionUID = -7590070827389604444L;
 
 	private JLabel lpi, labelDrogs, labelDate, labelDiagnostic, labelCNP, lConsNo;
@@ -36,7 +39,7 @@ public class NewConsultation extends JFrame {
 
 	private Choice chooseCnp;
 
-	public NewConsultation() {
+	public ViewConsultation() {
 		super("Create a new Consultation");
 
 		createUI();
@@ -71,7 +74,7 @@ public class NewConsultation extends JFrame {
 		});
 		add(bclr);
 
-		bsub = new JButton("ADD", new ImageIcon("images/add.gif"));
+		bsub = new JButton("SEARCH", new ImageIcon("images/search.png"));
 		bsub.setBounds(362, 643, 100, 30);
 		bsub.addActionListener(new ActionListener() {
 
@@ -131,7 +134,7 @@ public class NewConsultation extends JFrame {
 		add(labelCNP);
 
 		chooseCnp = new Choice();
-		chooseCnp.setBounds(610, 97, 100, 20);
+		chooseCnp.setBounds(620, 97, 100, 20);
 
 		for (Integer cnp : getPacientCNP()) {
 			chooseCnp.add(cnp.toString());
@@ -140,11 +143,11 @@ public class NewConsultation extends JFrame {
 
 		// cons no
 		lConsNo = new JLabel("Cons. No.:");
-		lConsNo.setBounds(720, 97, 60, 20);
+		lConsNo.setBounds(730, 97, 60, 20);
 		add(lConsNo);
 
 		tfConsNo = new JTextField(30);
-		tfConsNo.setBounds(788, 97, 60, 20);
+		tfConsNo.setBounds(798, 97, 60, 20);
 		add(tfConsNo);
 	}
 
@@ -170,32 +173,22 @@ public class NewConsultation extends JFrame {
 
 	private void submitData() {
 		try {
-			int cnp = Integer.parseInt(chooseCnp.getSelectedItem());
-
-			String drogs = taDrogs.getText();
-			if (drogs.equals(null)) {
-				System.out.println("addr");
-				throw new BlankException();
-			}
-
-			String date = tfDate.getText();
-			if (date.equals(null)) {
-				System.out.println("dob");
-				throw new BlankException();
-			} else if (date.length() < 5) {
-				date = "01.01.1000";
-			}
-
-			String diagnostic = taDiagnostic.getText();
 			String consNo = tfConsNo.getText();
 
 			// send data
-			String sqlStatement = SQL_INSERT_INTO + " " + TABLE_CONSULTATION
-					+ "(CNP_FK, NoCons, Date, Diagnostic, Drogs)" + " VALUES(" + cnp + "," + consNo + ",'"
-					+ Date.valueOf(date) + "','" + diagnostic + "','" + drogs + "')";
+			String sqlStatement = SQL_SELECT + " * " + SQL_FROM + " " + TABLE_CONSULTATION + " "
+					+ SQL_WHERE + " NoCons=" + consNo;
 
 			Statement st = DBConnection.connect().createStatement();
-			st.executeUpdate(sqlStatement);
+			ResultSet rs = st.executeQuery(sqlStatement);
+			if (rs.next()) {
+				chooseCnp.select(rs.getString("CNP_FK"));
+				tfConsNo.setText(rs.getString("NoCons"));
+				tfDate.setText(rs.getString("Date"));
+				taDiagnostic.setText(rs.getString("Diagnostic"));
+				taDrogs.setText(rs.getString("Drogs"));
+			}
+			
 			DBConnection.disconnect();
 			new SuccessDialog();
 		} catch (Exception e) {

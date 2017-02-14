@@ -1,6 +1,13 @@
 package gui.consultation;
 
-import static start.Constants.*;
+import static start.Constants.ADD_DATA;
+import static start.Constants.BACK;
+import static start.Constants.IMG_ADD;
+import static start.Constants.IMG_MODIFY;
+import static start.Constants.IMG_RESTORE;
+import static start.Constants.IMG_SEARCH;
+import static start.Constants.MODIFY_DATA;
+import static start.Constants.VIEW_DATA;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,16 +18,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import gui.MainPage;
-import gui.pacient.PatientInfoView;
 import gui.pacient.PatientInfomodify;
 
-public class ConsultationView extends JFrame {
+public class ConsultationPage extends JFrame {
 	private static final long serialVersionUID = -4553228631590052638L;
 
 	private JButton bAdd, bModify, bview, bback;
 	private JLabel linfo, linfo1, linfo2, linfo3;
 
-	public ConsultationView() {
+	public ConsultationPage() {
 		super("Consultations");
 		setSize(1024, 768);
 		setVisible(true);
@@ -73,7 +79,7 @@ public class ConsultationView extends JFrame {
 		bview.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				new PatientInfoView();
+				new ViewConsultation();
 				setVisible(false);
 			}
 		});
