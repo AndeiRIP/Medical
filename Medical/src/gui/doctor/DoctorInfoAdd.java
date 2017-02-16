@@ -1,11 +1,10 @@
 package gui.doctor;
-import static start.Constants.*;
+import static start.Constants.SQL_INSERT_INTO;
+import static start.Constants.TABLE_DOCTOR;
 
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import exceptions.BlankException;
 import exceptions.NameException;
 import gui.ClsSettings;
@@ -28,8 +28,6 @@ import gui.dialog.SuccessDialog;
 
 public class DoctorInfoAdd extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -6737883779709651407L;
-	
-	private static Connection cn = null;
 
 	private JLabel lmain, ldi, lname, ladd, ltel,  ldid, ldspec, lwork, lworkfrom, lworkto;
 	private JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
@@ -78,6 +76,7 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 
 		tfdid = new JTextField(30);
 		tfdid.setBounds(643, 97, 50, 20);
+		tfdid.setEditable(false);
 		add(tfdid);
 
 		tftel = new JTextField(30);
@@ -128,16 +127,6 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 		bback.setBounds(580, 643, 100, 30);
 		add(bback);
 
-		try {
-
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			cn = DriverManager.getConnection("Jdbc:Odbc:doc");
-		}
-
-		catch (Exception e) {
-			System.out.println(e);
-		}
-
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
 		bback.addActionListener(new back());
@@ -168,12 +157,6 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 			try {
 
-				String num = tfdid.getText();
-				if (num.equals(null)) {
-					System.out.println("num");
-					throw new BlankException();
-				}
-
 				String name = tfname.getText();
 
 				int a;
@@ -182,7 +165,7 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name.length(); i++) {
-						boolean check = Character.isLetter(name.charAt(i));
+						// boolean check = Character.isLetter(name.charAt(i));
 						a = name.charAt(i);
 						System.out.print("  " + a);
 						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
@@ -199,19 +182,20 @@ public class DoctorInfoAdd extends JFrame implements ActionListener {
 				}
 
 				String contact = tftel.getText();
-
 				String spec = taspecial.getText();
-
 				String workf = tfworkf.getText();
-
 				String workt = tfworkt.getText();
 
-				Statement st = cn.createStatement();
+				Statement st = DBConnection.connect().createStatement();
 
-				st.executeUpdate(SQL_INSERT_INTO + " " + TABLE_DOCTOR + " VALUES('" + num + "','" + name + "','" + addr + "','" + contact
-						+ "','" + spec + "','" + workf + "','" + workt + "');");
+				String sqlStatement = SQL_INSERT_INTO + " " + 
+				TABLE_DOCTOR + "(Name, Address, Contact, Specialization, WorkFrom, WorkTo)" +
+						" VALUES('" + name + "','" + addr + "'," + contact + ",'" + spec + "'," + workf + "," + workt + ")";
+				st.executeUpdate(sqlStatement);
 
 				new SuccessDialog();
+				DBConnection.disconnect();
+				
 			} catch (SQLException sq) {
 				String message = "Enter Valid Doctor ID and Contact.";
 				JOptionPane.showMessageDialog(new JFrame(), message, "ERROR!", JOptionPane.ERROR_MESSAGE);

@@ -50,7 +50,7 @@ public class MainPage extends JFrame {
 		linfo4.setBounds(50, 413, 250, 20);
 		add(linfo4);
 		
-		lCons = new JLabel("5. Patient and Doctor related Data");
+		lCons = new JLabel("5. Register consultations");
 		lCons.setBounds(50, 466, 250, 20);
 		add(lCons);
      

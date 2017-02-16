@@ -1,9 +1,10 @@
 package gui.doctor;
+
+import static start.Constants.*;
+
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -15,148 +16,119 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import gui.DocStart;
 
-public class DoctorInfoView extends JFrame implements ActionListener
-{
-
-	static Connection cn=null;
-	static Connection cn2=null;
-	Statement st=null;
-	Statement st2=null;
-	ResultSet rs=null;
-	ResultSet rs2=null;
-
+public class DoctorInfoView extends JFrame implements ActionListener {
+	private static final long serialVersionUID = 7012574271967568488L;
 	
-	JLabel lmain,ldi,lname,ladd,ltel,lspecial,ldid,ldspec,lwork,lworkfrom,lworkto,lpatlist;
-	JTextField tfname,tftel,tfdid,tfworkf,tfworkt;
-	TextArea taadd,taspecial,tapatlist;
-	JButton bsub,bclr,bback;
-	
-	public DoctorInfoView()
-	{
-	super("Doctor Information");
-	setSize(1024,768);
-	setVisible(true);
-	setLayout(null);
+	private JLabel lmain, ldi, lname, ladd, ltel, ldid, ldspec, lwork, lworkfrom, lworkto, lpatlist;
+	private JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
+	private TextArea taadd, taspecial, tapatlist;
+	private JButton bsub, bclr, bback;
 
-	lmain=new JLabel("Doctor Information");
-	lmain.setBounds(440,35,107,15);
-	add(lmain);
+	public DoctorInfoView() {
+		super("Doctor Information");
+		setSize(1024, 768);
+		setVisible(true);
+		setLayout(null);
 
-	ldi=new JLabel("Doctor Information");
-	ldi.setBounds(40,70,120,15);
-	add(ldi);
+		lmain = new JLabel("Doctor Information");
+		lmain.setBounds(440, 35, 107, 15);
+		add(lmain);
 
-	lname=new JLabel("Name :");
-	lname.setBounds(104,97,70,25);
-	add(lname);
+		ldi = new JLabel("Doctor Information");
+		ldi.setBounds(40, 70, 120, 15);
+		add(ldi);
 
-	tfname=new JTextField(30);
-	tfname.setBounds(270,97,250,20);
-	add(tfname);
+		lname = new JLabel("Name :");
+		lname.setBounds(104, 97, 70, 25);
+		add(lname);
 
-	ladd=new JLabel("Address :");
-	ladd.setBounds(104,138,70,15);
-	add(ladd);
+		tfname = new JTextField(30);
+		tfname.setBounds(270, 97, 250, 20);
+		add(tfname);
 
-	taadd=new TextArea();
-	taadd.setBounds(270,138,250,100);
-	add(taadd);
+		ladd = new JLabel("Address :");
+		ladd.setBounds(104, 138, 70, 15);
+		add(ladd);
 
-	ltel=new JLabel("Contact :");
-	ltel.setBounds(575,138,50,25);
-	add(ltel);
+		taadd = new TextArea();
+		taadd.setBounds(270, 138, 250, 100);
+		add(taadd);
 
-	ldid=new JLabel("Doctor ID:");
-	ldid.setBounds(570,97,70,25);
-	add(ldid);
+		ltel = new JLabel("Contact :");
+		ltel.setBounds(575, 138, 50, 25);
+		add(ltel);
 
-	tfdid=new JTextField(30);
-	tfdid.setBounds(643,97,50,20);
-	add(tfdid);
+		ldid = new JLabel("Doctor ID:");
+		ldid.setBounds(570, 97, 70, 25);
+		add(ldid);
 
-	tftel=new JTextField(30);
-	tftel.setBounds(640,138,200,20);
-	add(tftel);
+		tfdid = new JTextField(30);
+		tfdid.setBounds(643, 97, 50, 20);
+		add(tfdid);
 
-	ldspec=new JLabel("Specialization :");
-	ldspec.setBounds(104,310,100,25);
-	add(ldspec);
+		tftel = new JTextField(30);
+		tftel.setBounds(640, 138, 200, 20);
+		add(tftel);
 
-	taspecial=new TextArea();
-	taspecial.setBounds(270,310,250,100);
-	add(taspecial);
+		ldspec = new JLabel("Specialization :");
+		ldspec.setBounds(104, 310, 100, 25);
+		add(ldspec);
 
-	lwork=new JLabel("Working hours :");
-	lwork.setBounds(570,200,100,15);
-	add(lwork);
+		taspecial = new TextArea();
+		taspecial.setBounds(270, 310, 250, 100);
+		add(taspecial);
 
-	lworkfrom=new JLabel("From :");
-	lworkfrom.setBounds(670,200,37,25);
-	add(lworkfrom);
+		lwork = new JLabel("Working hours :");
+		lwork.setBounds(570, 200, 100, 15);
+		add(lwork);
 
-	tfworkf=new JTextField(30);
-	tfworkf.setBounds(710,200,30,20);
-	add(tfworkf);
-	
-	lworkto=new JLabel("to :");
-	lworkto.setBounds(747,200,20,25);
-	add(lworkto);
+		lworkfrom = new JLabel("From :");
+		lworkfrom.setBounds(670, 200, 37, 25);
+		add(lworkfrom);
 
-	tfworkt=new JTextField(30);
-	tfworkt.setBounds(775,200,30,20);
-	add(tfworkt);
+		tfworkf = new JTextField(30);
+		tfworkf.setBounds(710, 200, 30, 20);
+		add(tfworkf);
 
-	lpatlist=new JLabel("Patient List");
-	lpatlist.setBounds(570,290,80,25);
-	add(lpatlist);
+		lworkto = new JLabel("to :");
+		lworkto.setBounds(747, 200, 20, 25);
+		add(lworkto);
 
+		tfworkt = new JTextField(30);
+		tfworkt.setBounds(775, 200, 30, 20);
+		add(tfworkt);
 
-	tapatlist=new TextArea();
-	tapatlist.setBounds(570,310,250,100);
-	add(tapatlist);
+		lpatlist = new JLabel("Patient List");
+		lpatlist.setBounds(570, 290, 80, 25);
+		add(lpatlist);
 
-	bsub=new JButton("SEARCH",new ImageIcon("images/search.png"));
-	bsub.setBounds(300,643,110,30);
-	add(bsub);	
+		tapatlist = new TextArea();
+		tapatlist.setBounds(570, 310, 250, 100);
+		add(tapatlist);
 
-	bclr=new JButton("CLEAR",new ImageIcon("images/LOGGOFF.PNG"));
-	bclr.setBounds(470,643,100,30);
-	add(bclr);
+		bsub = new JButton("SEARCH", new ImageIcon("images/search.png"));
+		bsub.setBounds(300, 643, 110, 30);
+		add(bsub);
 
-	bback=new JButton("BACK",new ImageIcon("images/restore.png"));
-	bback.setBounds(580,643,100,30);
-	add(bback);
+		bclr = new JButton("CLEAR", new ImageIcon("images/LOGGOFF.PNG"));
+		bclr.setBounds(470, 643, 100, 30);
+		add(bclr);
 
-	
-	
-	try{
-		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-		cn=DriverManager.getConnection("Jdbc:Odbc:doc");
-		
-		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-		cn2=DriverManager.getConnection("Jdbc:Odbc:pat");
-	   }
+		bback = new JButton("BACK", new ImageIcon("images/restore.png"));
+		bback.setBounds(580, 643, 100, 30);
+		add(bback);
 
-	catch(Exception e)
-		{
-			System.out.println(e);
-		}	
-		
+		bclr.addActionListener(new clear());
+		bsub.addActionListener(new submit());
+		bback.addActionListener(new back());
+	}
 
-	bclr.addActionListener(new clear());
-	bsub.addActionListener(new submit());
-	bback.addActionListener(new back());
-}
+	class clear implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
 
-
-
-class clear implements ActionListener
-	{
-		public void actionPerformed(ActionEvent ae)
-		{
-			
 			tfname.setText("");
 			tftel.setText("");
 			tfdid.setText("");
@@ -165,108 +137,95 @@ class clear implements ActionListener
 			taadd.setText("");
 			taspecial.setText("");
 			tapatlist.setText("");
-			
+
 		}
 	}
 
-
-class back implements ActionListener
-	{
-		public void actionPerformed(ActionEvent ae)
-		{
+	class back implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
 			new DocStart();
 			setVisible(false);
 		}
 	}
 
-
-public void actionPerformed(ActionEvent ae)
-	{}
-
-class patinfo implements ActionListener
-{
-	public void actionPerformed(ActionEvent ae)
-	{
-		
+	public void actionPerformed(ActionEvent ae) {
 	}
 
-};
+	class patinfo implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
 
-class submit implements ActionListener
-{
-	
-
-	public void actionPerformed(ActionEvent ae)
-	{			
-		try{
-
-		tapatlist.setText("");			
-		int num=Integer.parseInt(tfdid.getText());
-		String name;
-		String addr;
-		String contact;
-		String spec;
-		String workf;
-		String workt;
-		
-
-		Statement st=cn.createStatement();
-		ResultSet rs=st.executeQuery("SELECT * FROM DOC WHERE did="+num);
-		
-		if(rs.next())
-			{
-				num=rs.getInt("did");
-				name=rs.getString("name");
-				addr=rs.getString("address");
-				contact=rs.getString("contact");
-				spec=rs.getString("specialization");
-				workf=rs.getString("workfrom");
-				workt=rs.getString("workto");
-
-				
-				tfname.setText(name);
-				taadd.setText(addr);
-				tftel.setText(contact);
-				taspecial.setText(spec);
-				tfworkf.setText(workf);
-				tfworkt.setText(workt);
-
-				
-			}
-		}
-		catch(SQLException sq)
-		{
-			System.out.println(sq);
 		}
 
-		try{
+	};
 
-			String docname=tfname.getText();
-			System.out.println(docname);
-			Statement st2=cn2.createStatement();
-		    ResultSet rs2=st2.executeQuery("SELECT patientno,name FROM PAT WHERE docname='"+docname+"'");
-			ResultSetMetaData rsmt=rs2.getMetaData();
-			int ctr=rsmt.getColumnCount();
-			while(rs2.next())
-			{
-				for(int i=1;i<=ctr;i++)
-				{
-					tapatlist.append(rs2.getString(i)+"  ");
+	class submit implements ActionListener {
+
+		public void actionPerformed(ActionEvent ae) {
+			try {
+
+				tapatlist.setText("");
+				int num = Integer.parseInt(tfdid.getText());
+				String name;
+				String addr;
+				String contact;
+				String spec;
+				String workf;
+				String workt;
+
+				Statement st = DBConnection.connect().createStatement();
+				ResultSet rs = st.executeQuery(SQL_SELECT + " * FROM " + TABLE_DOCTOR + " WHERE did=" + num);
+
+				if (rs.next()) {
+					num = rs.getInt("did");
+					name = rs.getString("name");
+					addr = rs.getString("address");
+					contact = rs.getString("contact");
+					spec = rs.getString("specialization");
+					workf = rs.getString("workfrom");
+					workt = rs.getString("workto");
+
+					tfname.setText(name);
+					taadd.setText(addr);
+					tftel.setText(contact);
+					taspecial.setText(spec);
+					tfworkf.setText(workf);
+					tfworkt.setText(workt);
+
 				}
-				tapatlist.append("\n");
-			}
-		   }
-		   catch(SQLException sq)
-		   {
+				
+				DBConnection.disconnect();
+			} catch (SQLException sq) {
 				System.out.println(sq);
-		   }
-		
+			}
+
+			try {
+
+				String docname = tfname.getText();
+				System.out.println(docname);
+				
+				Statement st2 = DBConnection.connect().createStatement();
+				String sqlStatement = SQL_SELECT + " CNP,Name " + SQL_FROM + " " + TABLE_PATIENT + " WHERE docname='" + docname + "'";
+				ResultSet rs2 = st2.executeQuery(sqlStatement);
+				ResultSetMetaData rsmt = rs2.getMetaData();
+				int ctr = rsmt.getColumnCount();
+				
+				while (rs2.next()) {
+					for (int i = 1; i <= ctr; i++) {
+						tapatlist.append(rs2.getString(i) + "  ");
+					}
+					tapatlist.append("\n");
+				}
+				
+				DBConnection.disconnect();
+			} catch (SQLException sq) {
+				System.out.println(sq);
+			}
+
+		}
+
 	}
 
-}
-
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 		new DoctorInfoView();
 		System.out.println("Doctors Info Add");
 	}

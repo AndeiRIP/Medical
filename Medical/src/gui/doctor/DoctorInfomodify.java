@@ -1,9 +1,11 @@
 package gui.doctor;
+
+import static start.Constants.*;
+
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import connection.DBConnection;
 import exceptions.BlankException;
 import exceptions.NameException;
 import gui.ClsSettings;
@@ -27,19 +30,14 @@ import gui.dialog.ErrorDialog2;
 import gui.dialog.SuccessDialog2;
 
 public class DoctorInfomodify extends JFrame implements ActionListener {
+	private static final long serialVersionUID = 9130891707131476179L;
 
-	static Connection cn = null;
-	Statement st = null;
-	ResultSet rs = null;
+	private JLabel lmain, ldi, lname, ladd, ltel, ldid, ldspec, lwork, lworkfrom, lworkto;
+	private JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
+	private TextArea taadd, taspecial;
+	private JButton bsub, bclr, bmod, bback;
 
-	JLabel lmain, ldi, lname, ladd, ltel, lspecial, ldid, ldspec, lwork, lworkfrom, lworkto;
-	JTextField tfname, tftel, tfdid, tfworkf, tfworkt;
-	TextArea taadd, taspecial;
-	JButton bsub, bclr, bmod, bback;
-
-	int x, y;
-	String str;
-	ClsSettings settings = new ClsSettings();
+	private ClsSettings settings = new ClsSettings();
 
 	public DoctorInfomodify() {
 		super("Doctor Information");
@@ -134,15 +132,6 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 		bback.setBounds(700, 643, 100, 30);
 		add(bback);
 
-		try {
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			cn = DriverManager.getConnection("Jdbc:Odbc:doc");
-		}
-
-		catch (Exception e) {
-			System.out.println(e);
-		}
-
 		bclr.addActionListener(new clear());
 		bsub.addActionListener(new submit());
 		bmod.addActionListener(new modify());
@@ -191,8 +180,9 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 				String workf;
 				String workt;
 
-				Statement st = cn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM DOC WHERE did=" + num);
+				Statement st = DBConnection.connect().createStatement();
+				ResultSet rs = st
+						.executeQuery(SQL_SELECT + " * " + SQL_FROM + " " + TABLE_DOCTOR + " WHERE did=" + num);
 
 				if (rs.next()) {
 					num = rs.getInt("did");
@@ -212,6 +202,7 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 
 				}
 
+				DBConnection.disconnect();
 			} catch (SQLException sq) {
 				System.out.println(sq);
 			}
@@ -226,22 +217,17 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 				String name1 = tfname.getText();
 				int num1 = Integer.parseInt(tfdid.getText());
 				int a;
-				
+
 				a = name1.charAt(0);
 				if (name1.equals("") || a == 32) {
 					throw new BlankException();
 				} else {
 					for (int i = 0; i < name1.length(); i++) {
-						boolean check = Character.isLetter(name1.charAt(i));
+						char charAt = name1.charAt(i);
+						boolean check = Character.isLetter(charAt) || Character.isSpaceChar(charAt);
 						if (!check) {
 							throw new NameException();
 						}
-//						a = name1.charAt(i);
-//						System.out.print("  " + a);
-//						if (!((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a == 32) || (a == 46))) {
-//							throw new NameException();
-//						}
-
 					}
 				}
 
@@ -257,10 +243,13 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 				String workf1 = tfworkf.getText();
 				String workt1 = tfworkt.getText();
 
-				String str = "UPDATE DOC SET name=?,address=?,contact=?,specialization=?,workfrom=?,workto=? WHERE did=?";
+				String str = SQL_UPDATE + " " + TABLE_DOCTOR
+						+ " SET name=?,address=?,contact=?,specialization=?,workfrom=?,workto=? WHERE did=?";
 
-				cn.createStatement();
-				PreparedStatement psmt = cn.prepareStatement(str);
+				Connection connect = DBConnection.connect();
+				connect.createStatement();
+
+				PreparedStatement psmt = connect.prepareStatement(str);
 				psmt.setString(1, name1);
 				psmt.setString(2, addr1);
 				psmt.setString(3, contact1);
@@ -272,7 +261,7 @@ public class DoctorInfomodify extends JFrame implements ActionListener {
 				psmt.executeUpdate();
 
 				new SuccessDialog2();
-
+				DBConnection.disconnect();
 			} catch (SQLException sq) {
 				String message = "Enter Valid Doctor ID and Contact.";
 				JOptionPane.showMessageDialog(new JFrame(), message, "ERROR!", JOptionPane.ERROR_MESSAGE);
